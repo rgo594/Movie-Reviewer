@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+
+resp = JSON.parse(RestClient.get "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=be88eec84f09
+c039b6c361bdf5e07e11")
