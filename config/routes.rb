@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  get 'movies/index'
+  get 'movies/show'
+  get 'movies/new'
+  get 'movies/create'
+  get 'movies/delete'
+  get 'reviews/index'
+  get 'reviews/show'
+  get 'reviews/new'
+  get 'reviews/create'
+  get 'reviews/update'
+  get 'reviews/delete'
   root 'home#index'
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
