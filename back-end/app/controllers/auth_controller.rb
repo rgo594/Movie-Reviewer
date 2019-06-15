@@ -13,7 +13,7 @@ class AuthController < ApplicationController
       # payload ={ user.id: user.id }
       # token = JWT.encode payload, 'otters', 'HS256'
 
-      render json: { token: encode_token(user)}
+      render json: { token: encode_token(current_user)}
     else
       render json: { error: "Wrong username or password"}
     end

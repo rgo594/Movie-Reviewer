@@ -1,4 +1,5 @@
 class User < ApplicationRecord
-  has_many :reviews
   has_secure_password
+  
+  has_many :reviews
 end

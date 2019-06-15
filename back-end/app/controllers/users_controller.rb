@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+
   def index
   end
 
@@ -23,9 +24,9 @@ class UsersController < ApplicationController
   end
 
   def profile
-    user = User.find(user_id)
+    # user = User.find(user_id)
 
-    render json: user
+    render json: current_user
   end
 
   def update

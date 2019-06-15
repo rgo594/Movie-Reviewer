@@ -4,6 +4,7 @@ class CreateMovies < ActiveRecord::Migration[5.2]
       t.string :title
       t.text :description
       t.integer :avg_score
+      t.string :movie_img
 
       t.timestamps
     end
