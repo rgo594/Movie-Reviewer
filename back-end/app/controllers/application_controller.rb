@@ -1,50 +1,41 @@
 class ApplicationController < ActionController::Base
 
-  # def user_payload(user)
-  #   { user_id: user.id }
-  # end
-  #
-  # def encode_token(user)
-  #   JWT.encode(user_payload(user), secret, 'HS256')
-  # end
-  #
-  # def token
-  #   request.headers["Authorization"]
-  # end
-  #
-  # def secret
-  #   "otters"
-  # end
-  #
-  # def decoded_token
-  #   JWT.decode(token, secret, true, { algorithm: 'HS256' })
-  # end
-  #
-  # def current_user
-  #   User.find(decoded_token[0]["user_id"])
-  # end
-  def user_payload(user)
-    { user_id: user.id }
+  before_action :authorized
+
+  def encode_token(payload)
+    # should store secret in env variable
+    JWT.encode(payload, 'my_s3cr3t')
   end
 
-  def encode_token(user)
-    JWT.encode(user_payload(user), secret, 'HS256')
+  def auth_header
+    # { Authorization: 'Bearer <token>' }
+    request.headers['Authorization']
   end
 
-  def token
-    request.headers["Authorization"]
+  def decoded_token
+    if auth_header
+      token = auth_header.split(' ')[1]
+      # header: { 'Authorization': 'Bearer <token>' }
+      begin
+        JWT.decode(token, 'my_s3cr3t', true, algorithm: 'HS256')
+      rescue JWT::DecodeError
+        nil
+      end
+    end
   end
 
-  def secret
-    ENV['project-secret']
+  def current_user
+    if decoded_token
+      user_id = decoded_token[0]['user_id']
+      @user = User.find_by(id: user_id)
+    end
   end
 
-  # def decoded_token
-  #   JWT.decode(token, secret, true, { algorithm: 'HS256' })
-  # end
+  def logged_in?
+    !!current_user
+  end
 
-  # def current_user
-  #   User.find(decoded_token[0]["user_id"])
-  # end
-
+  def authorized
+    render json: { message: 'Please log in' }, status: :unauthorized unless logged_in?
+  end
 end

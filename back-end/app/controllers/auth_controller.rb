@@ -1,34 +1,22 @@
 class AuthController < ApplicationController
-  # def login
-  #   # params: { username: '', password: '' }
-  #
-  #   # find the user by their username
-  #   user = User.find_by(username: params["username"])
-  #
-  #   # authenticate the user
-  #   is_authenticated = user.authenticate(params["password"])
-  #
-  #   # "log in the user" - whatever that means
-  #   if is_authenticated
-  #     render json: { token: encode_token(user) }
-  #   else
-  #     render json: { error: "Wrong username or password" }
-  #   end
-  # end
-  def login
-    # params: { username: '', password: '' }
+  skip_before_action :authorized, only: [:create]
 
-    # find the user by their username
-    user = User.find_by(username: params["username"])
-
-    # authenticate the user
-    is_authenticated = user.authenticate(params["password"])
-
-    # "log in the user" - whatever that means
-    if is_authenticated
-      render json: { token: encode_token(user) }
-    else
-      render json: { error: "Wrong username or password" }
+    def create
+      @user = User.find_by(username: user_login_params[:username])
+      #User#authenticate comes from BCrypt
+      if @user && @user.authenticate(user_login_params[:password])
+        # encode token comes from ApplicationController
+        token = encode_token({ user_id: @user.id })
+        render json: { user: UserSerializer.new(@user), jwt: token }, status: :accepted
+      else
+        render json: { message: 'Invalid username or password' }, status: :unauthorized
+      end
     end
-  end
+
+    private
+
+    def user_login_params
+      # params { user: {username: 'Chandler Bing', password: 'hi' } }
+      params.require(:user).permit(:username, :password)
+    end
 end

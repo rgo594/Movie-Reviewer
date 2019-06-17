@@ -1,55 +1,32 @@
 class UsersController < ApplicationController
-  skip_before_action :authorized, only: [:create]
-  # def create
-  #   # params: {username '', password ''}
-  #   User.create(user_params)
-  #   if is_valid
-  #     # payload ={ user.id: user.id }
-  #
-  #     token = JWT.encode payload, 'otters', 'HS256'
-  #
-  #     render json: { token: encode_token(user_payload(user)) }
-  #   else
-  #     render json: { errors: user.errors.full_messages }
-  #   end
-  # end
-  #
-  # def profile
-  #   # user = User.find(current_user.id)
-  #
-  #   render json: current_user
-  # end
-  #
-  #
-  # private
-  #
-  # def user_params
-  #   params.permit(:username, :password)
-  # end
+  # skip_before_action :authorized, only: [:create]
 
-  def create
-  # params: { username: '', password: '' }
+    # def profile
+    #   render json: { user: UserSerializer.new(current_user) }, status: :accepted
+    # end
 
-  user = User.create(user_params)
+    def profile
+      byebug
+      # find by username because that param is provided
+      user = User.find_by(username: params['username'])
+      token = encode_token({ user_id: user.id })
+      render json: { token: token, user_id: user.id }
+    end
 
-  is_valid = user.valid?
+    def create
+      byebug
+      @user = User.create(user_params)
+      if @user.valid?
+        @token = encode_token({ user_id: @user.id })
+        render json: { user: UserSerializer.new(@user), jwt: @token }, status: :created
+      else
+        render json: { error: 'failed to create user' }, status: :not_acceptable
+      end
+    end
 
-  if is_valid
-    render json: { token: encode_token(user) }
-  else
-    render json: { errors: user.errors.full_messages }
+    private
+
+    def user_params
+      params.require(:user).permit(:username, :password)
+    end
   end
-end
-
-
-
-  def profile
-    render json: { user: UserSerializer.new(current_user) }, status: :accepted
-  end
-
-private
-
-def user_params
-  params.permit(:username, :password)
-end
-end
