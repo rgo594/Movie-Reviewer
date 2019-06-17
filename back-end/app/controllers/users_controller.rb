@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
-  # skip_before_action :authorized, only: [:create]
-
-    # def profile
-    #   render json: { user: UserSerializer.new(current_user) }, status: :accepted
-    # end
+  skip_before_action :authorized, only: [:create]
+  skip_before_action :verify_authenticity_token
 
     def profile
-      byebug
+      render json: { user: UserSerializer.new(current_user) }, status: :accepted
+    end
+
+    def profile
       # find by username because that param is provided
       user = User.find_by(username: params['username'])
       token = encode_token({ user_id: user.id })
@@ -14,7 +14,6 @@ class UsersController < ApplicationController
     end
 
     def create
-      byebug
       @user = User.create(user_params)
       if @user.valid?
         @token = encode_token({ user_id: @user.id })
