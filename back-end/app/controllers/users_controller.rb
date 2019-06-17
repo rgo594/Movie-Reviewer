@@ -1,43 +1,55 @@
 class UsersController < ApplicationController
-
-  def index
-  end
-
-  def show
-  end
-
-  def new
-  end
+  skip_before_action :authorized, only: [:create]
+  # def create
+  #   # params: {username '', password ''}
+  #   User.create(user_params)
+  #   if is_valid
+  #     # payload ={ user.id: user.id }
+  #
+  #     token = JWT.encode payload, 'otters', 'HS256'
+  #
+  #     render json: { token: encode_token(user_payload(user)) }
+  #   else
+  #     render json: { errors: user.errors.full_messages }
+  #   end
+  # end
+  #
+  # def profile
+  #   # user = User.find(current_user.id)
+  #
+  #   render json: current_user
+  # end
+  #
+  #
+  # private
+  #
+  # def user_params
+  #   params.permit(:username, :password)
+  # end
 
   def create
-    # params: {username '', password ''}
-    User.create(user_params)
-    if is_valid
-      # payload ={ user.id: user.id }
+  # params: { username: '', password: '' }
 
-      token = JWT.encode payload, 'otters', 'HS256'
+  user = User.create(user_params)
 
-      render json: { token: encode_token(user_payload(user)) }
-    else
-      render json: { errors: user.errors.full_messages }
-    end
+  is_valid = user.valid?
+
+  if is_valid
+    render json: { token: encode_token(user) }
+  else
+    render json: { errors: user.errors.full_messages }
   end
+end
+
+
 
   def profile
-    # user = User.find(user_id)
-
-    render json: current_user
+    render json: { user: UserSerializer.new(current_user) }, status: :accepted
   end
 
-  def update
-  end
+private
 
-  def delete
-  end
-
-  private
-
-  def user_params
-    params.permits(:username, :password)
-  end
+def user_params
+  params.permit(:username, :password)
+end
 end
