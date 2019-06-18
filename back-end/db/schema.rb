@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2019_06_15_175336) do
   end
 
   create_table "reviews", force: :cascade do |t|
+    t.string "username"
     t.text "r_comment"
     t.integer "r_score"
     t.bigint "user_id"
