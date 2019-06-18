@@ -16,6 +16,6 @@ def thing()
   # byebug
     data = movie_obj["results"]
 
-    data.map{|movie| Movie.create(title: movie["title"], description: movie["overview"], avg_score: movie["vote_average"], movie_img: movie["poster_path"])}
+    data.map{|movie| Movie.create(title: movie["title"], description: movie["overview"], avg_score: movie["vote_average"], movie_img: movie["poster_path"], user_comment: [])}
 end
 thing

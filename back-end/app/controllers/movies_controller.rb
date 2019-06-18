@@ -7,6 +7,8 @@ class MoviesController < ApplicationController
   end
 
   def show
+    @movie = Movie.find(params[:id])
+    render json: {movies: @movie}
   end
 
   def new

@@ -20,12 +20,15 @@ ActiveRecord::Schema.define(version: 2019_06_15_175336) do
     t.text "description"
     t.integer "avg_score"
     t.string "movie_img"
+    t.text "user_comment"
+    t.integer "user_score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "reviews", force: :cascade do |t|
-    t.text "comment"
+    t.text "r_comment"
+    t.integer "r_score"
     t.bigint "user_id"
     t.bigint "movie_id"
     t.datetime "created_at", null: false
