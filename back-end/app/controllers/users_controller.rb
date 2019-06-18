@@ -2,9 +2,9 @@ class UsersController < ApplicationController
   skip_before_action :authorized, only: [:create]
   skip_before_action :verify_authenticity_token
 
-    def profile
-      render json: { user: UserSerializer.new(current_user) }, status: :accepted
-    end
+    # def profile
+    #   render json: { user: UserSerializer.new(current_user) }, status: :accepted
+    # end
 
     def profile
       # find by username because that param is provided
