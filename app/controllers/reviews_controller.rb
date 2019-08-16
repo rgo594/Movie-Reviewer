@@ -2,8 +2,9 @@ class ReviewsController < ApplicationController
   skip_before_action :authorized
   skip_before_action :verify_authenticity_token
 
-  def index
-    # @movie = Movie.find(params[:movie_id])
+  def user_reviews
+    @reviews = Review.select( |r| r[:user_id] == params[:user_id].to_i)
+    render json: {review: @reviews}
   end
 
   def show
