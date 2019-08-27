@@ -10,7 +10,7 @@ class ReviewsController < ApplicationController
 
   def user_reviews
     @reviews = Review.select{ |r| r[:user_id] == params[:id].to_i }
-    render json: {reviews: @reviews}
+    render json: @reviews
   end
 
   def new
