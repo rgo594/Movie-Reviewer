@@ -17,10 +17,8 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    # byebug
-    # Review.create(review_params)
     @review = Review.create(review_params)
-    render json: {review: @review}
+    render json: @review
   end
 
   def update
@@ -32,6 +30,6 @@ class ReviewsController < ApplicationController
   private
 
   def review_params
-    params.require(:review).permit(:r_comment, :r_score, :user_id, :movie_id, :username)
+    params.require(:review).permit(:r_comment, :r_score, :user_id, :movie_id, :username, :movie_title, :movie_poster)
   end
 end

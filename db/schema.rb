@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 2019_06_15_175336) do
     t.string "username"
     t.text "r_comment"
     t.integer "r_score"
+    t.text "movie_poster"
+    t.string "movie_title"
     t.bigint "user_id"
     t.bigint "movie_id"
     t.datetime "created_at", null: false
