@@ -3,9 +3,8 @@ class MoviesController < ApplicationController
 
   def index
     @all = Movie.all
-    render json: {movies:@all}
+    render json: @all
   end
-
 
   def show
     @movie = Movie.find(params[:id])

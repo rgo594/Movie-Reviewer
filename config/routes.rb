@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get '/profile', to: 'users#profile'
   get '/reviews/:id', to: "reviews#user_reviews"
   # post '/movies/:id/reviews', to: ""
+  delete 'review/:id', to: "reviews#delete"
+  patch 'review/:id', to: "reviews#update"
   resources :movies, :auth, :reviews, :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
